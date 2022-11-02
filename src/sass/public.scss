@@ -1,0 +1,12 @@
+@mixin flex {
+  display: flex;
+}
+
+@mixin flexible-box($justify, $align, $direction: null) {
+  @include flex;
+  align-items: $align;
+  justify-content: $justify;
+  @if ($direction) {
+    flex-direction: $direction;
+  }
+}
