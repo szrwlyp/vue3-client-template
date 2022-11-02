@@ -31,7 +31,6 @@ console.log(set_changeDate);
 
 const route = useRoute();
 // 用户信息
-let vpas_id = ref("VPAS-RT-000805");
 
 //被访问的用户ID
 let customerid = ref(route.query.customerid);
