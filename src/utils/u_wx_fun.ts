@@ -53,7 +53,6 @@ export function wxAuthorizeLogin() {
       }
     },
     error: (err) => {
-      console.log(err);
       if (err.reload) {
         // 清空用户数据和sessionId
         userInfo.$reset();

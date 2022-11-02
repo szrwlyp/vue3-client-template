@@ -26,15 +26,15 @@ const setStorage = (key: string, value: any) => {
   from(observableValue)
     .pipe(
       // 带有固定字符开头的store才存入本地
-      filter(([f_key, f_value]: any) => f_key.startsWith("set_")),
-      map(([m_key, m_value]: any) => ({ [m_key]: (m_value as any).value })),
+      filter(([k, v]: any) => k.startsWith("set_")),
+      map(([k, v]: any) => ({ [k]: (v as any).value })),
       // 收集所有源发射，并在源完成时将它们作为数组发射。
       toArray(),
-      map((res) => Object.assign({}, ...res))
+      map((res: any) => JSON.stringify(Object.assign({}, ...res)))
     )
     .subscribe({
-      next: (res) => {
-        sessionStorage.setItem(key, JSON.stringify(res));
+      next: (res: any) => {
+        sessionStorage.setItem(key, res);
       },
       error: (err) => {
         sessionStorage.removeItem(key);
