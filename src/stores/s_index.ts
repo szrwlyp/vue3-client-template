@@ -5,7 +5,6 @@ import { create } from "rxjs-spy";
 // Rxjs调试
 import { tag } from "rxjs-spy/operators/tag";
 const spy = create();
-console.log(spy);
 
 // 设置本地数据存储
 const setStorage = (key: string, value: any) => {

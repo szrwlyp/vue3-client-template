@@ -4,9 +4,9 @@ import {
   createWebHashHistory,
 } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-
+console.log(createWebHashHistory(import.meta.env.BASE_URL));
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes: [
     {
       path: "/",
@@ -22,13 +22,17 @@ const router = createRouter({
       component: () => import("../views/BloodPressureReport.vue"),
       meta: { title: "血压监测简报" },
     },
+    {
+      path: "/test_history",
+      name: "test_history",
+      component: () => import("../views/testHistory.vue"),
+    },
   ],
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.title) {
-    document.title = (to.meta.title as string) ?? "精准看护";
-  }
+  document.title = (to.meta.title as string) ?? "精准看护";
+
   next();
 });
 

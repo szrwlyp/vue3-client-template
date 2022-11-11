@@ -10,7 +10,11 @@ export default defineConfig({
     outDir: "precise_care_h5", //构建的生产环境项目文件名
   },
 
-  plugins: [vue()],
+  plugins: [
+    vue({
+      reactivityTransform: true,
+    }),
+  ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

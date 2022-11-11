@@ -9,7 +9,7 @@ const userInfo = useUserInfoStore();
 
 const { set_userDataStore, set_sessionIdStore } = storeToRefs(userInfo);
 
-function jumpWX() {
+function jumpWxAuth() {
   return new Observable((subscriber) => {
     subscriber.next({ msg: "微信授权", isUserData: false });
     subscriber.complete();
@@ -35,7 +35,7 @@ export function wxAuthorizeLogin() {
 
   iif(
     () => (!code && !set_sessionIdStore.value ? true : false),
-    jumpWX(),
+    jumpWxAuth(),
     iif(
       () => (set_userDataStore.value ? true : false),
       of({ ...set_userDataStore.value, isUserData: true }),
@@ -54,6 +54,7 @@ export function wxAuthorizeLogin() {
     },
     error: (err) => {
       if (err.reload) {
+        sessionIdSubject$.next({ implement: false, session_id: "" });
         // 清空用户数据和sessionId
         userInfo.$reset();
         // 重新微信授权登录

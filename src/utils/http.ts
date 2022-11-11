@@ -6,13 +6,18 @@ import {
   switchMap,
   throwError,
   of,
+  defer,
+  tap,
+  iif,
+  map,
   OperatorFunction,
   RetryConfig,
   ObservableInput,
   ObservedValueOf,
 } from "rxjs";
 import { ajax } from "rxjs/ajax";
-import { HttpParameter, HttpMethod } from "../types/http";
+import { HttpParameter, HttpMethod } from "@/types/http";
+import { wxAuthorizeLogin } from "@/utils/u_wx_fun";
 import { useUserInfoStore } from "@/stores/user_info";
 import { storeToRefs } from "pinia";
 
@@ -93,11 +98,30 @@ export default class Http {
       headers: header,
       body: { ...data, sessionid: set_sessionIdStore.value ?? "" },
     }).pipe(
-      switchMap((res) =>
-        res.status === 200
-          ? of(res.response)
-          : throwError(() => new Error("响应状态非200"))
+      tap((res) => {
+        console.log("tap++++++", res);
+      }),
+      switchMap(({ status, response }: any) =>
+        iif(
+          () => status === 200,
+          iif(
+            () => response.code === 0,
+            of(response),
+            defer(() => {
+              // 接口返回登录失败
+              if (response.code === -3) {
+                // 清空用户数据和sessionId
+                userInfo.$reset();
+                return of(wxAuthorizeLogin());
+              } else {
+                return of(response);
+              }
+            })
+          ),
+          throwError(() => new Error("请求状态非200"))
+        )
       ),
+
       // catchError((error, caught$) => {
       //   console.log("error: ", error);
       //   throw error;

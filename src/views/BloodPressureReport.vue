@@ -30,6 +30,7 @@ const { set_changeDate } = storeToRefs(useBloodPressureStore());
 console.log(set_changeDate);
 
 const route = useRoute();
+const router = useRouter();
 // 用户信息
 
 //被访问的用户ID
@@ -205,7 +206,7 @@ function getBloodPressure() {
  * 订阅BehaviorSubject
  * 当登录成功后，next()发送消息，此处订阅观察者发送的消息并执行请求获取数据。
  */
-sessionIdSubject$.subscribe({
+const sessionId$ = sessionIdSubject$.subscribe({
   next: (res) => {
     console.warn("subject", res);
     if (res.implement) {
@@ -237,13 +238,19 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  sessionIdSubject$.complete();
+  // 取消主题订阅
+  sessionId$.unsubscribe();
 });
 function testFun() {
   console.log(userInfo);
-  // set_sessionIdStore.value = "";
+
+  // window.history.pushState({ url: "aaa" }, "", "/#/test_history");
+
+  set_sessionIdStore.value = "111";
+  userInfo.setUserData({ ...set_userDataStore.value, sessionid: "111" });
+  router.push("/test_history");
   // userInfo.$reset();
-  userInfo.setUserData("");
+  // userInfo.setUserData("");
 }
 </script>
 
