@@ -1,6 +1,6 @@
 import { map, catchError, of, tap } from "rxjs";
-import Http from "../utils/http";
-import { HttpParameter, HttpMethod } from "../types/http";
+import Http from "@/http/http";
+import { HttpParameter, HttpMethod } from "@/http/http_types";
 
 /**
  * 血压数据处理参数接口

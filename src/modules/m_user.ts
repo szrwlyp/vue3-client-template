@@ -1,6 +1,6 @@
 import { switchMap, iif, throwError, of, Observable } from "rxjs";
-import Http from "../utils/http";
-import { HttpParameter, HttpMethod } from "../types/http";
+import Http from "@/http/http";
+import { HttpParameter, HttpMethod } from "@/http/http_types";
 
 /**
  * 微信用户登录
